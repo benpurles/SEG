@@ -1,0 +1,52 @@
+
+<main class="p-8 bg-gray-100 min-h-screen">
+    <div class="rounded-lg border bg-card text-card-foreground shadow-sm mx-auto max-w-md" data-v0-t="card">
+        <div class="flex flex-col space-y-1.5 p-6">
+            <h3 class="font-semibold tracking-tight text-2xl text-center">Sarcastic Email Response Generator</h3>
+            <p class="text-sm text-center text-gray-500">
+                Enter your email message below and generate a sarcastic response.
+            </p>
+        </div>
+        <div class="p-6 space-y-4">
+            <div class="space-y-2">
+                <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="email-message">Your Email Message</label>
+                <textarea class="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 min-h-[100px]" id="email-message" placeholder="Type your email message here..."></textarea>
+            </div>
+            <button class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-primary/90 h-10 px-4 py-2 w-full bg-blue-500 text-white" id="generate-button">Generate Response</button>
+        </div>
+        <div class="flex flex-col items-center space-y-4 p-4" id="response-container">
+            <h3 class="text-xl font-bold">Your Sarcastic Response:</h3>
+            <p class="text-center text-red-500" id="sarcastic-response">
+                <!-- Response will be displayed here -->
+            </p>
+            <div class="inline-flex items-center rounded-full border w-fit font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent hover:bg-primary/80 px-3 py-1 text-sm text-white bg-green-500">Generated</div>
+        </div>
+    </div>
+    <footer class="mt-8 text-center">
+        <p class="text-gray-500">
+            Made with <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 inline-block align-text-bottom text-red-500"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg> by <a class="text-blue-500 underline" href="#">Your Name</a>
+        </p>
+    </footer>
+</main>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("generate-button").addEventListener("click", function() {
+        var emailMessage = document.getElementById("email-message").value;
+        fetch('/generate', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ emailMessage: emailMessage })
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("sarcastic-response").textContent = data.response;
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    });
+});
+</script>
